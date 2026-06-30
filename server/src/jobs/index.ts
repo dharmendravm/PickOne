@@ -1,1 +1,1 @@
-import "./EmailJob.js"
+import "./email.job.js"

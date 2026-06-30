@@ -1,12 +1,11 @@
 import "dotenv/config";
-import express, {
-  type Application,
-  type Request,
-  type Response,
-} from "express";
+import express from "express";
+import type { Application, Request, Response } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
+
+import globalRoutes from "./routes/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -20,6 +19,9 @@ app.use(express.urlencoded({ extended: false }));
 // set view engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "./views"));
+
+// Routes
+app.use("/api", globalRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   const html = await ejs.renderFile(
@@ -43,9 +45,13 @@ app.get("/", async (req: Request, res: Response) => {
   });
 });
 
+// Global Error Handler
+app.use(galobalErrorHandler);
+
 // Queues
 import "./jobs/index.js";
-import { emailQueue, emailQueueName } from "./jobs/EmailJob.js";
+import { emailQueue, emailQueueName } from "./jobs/email.job.js";
+import { galobalErrorHandler } from "./middlewares/error.middleware.js";
 
 app.listen(PORT, () => {
   console.log(`Server is runnig on port: ${PORT}`);
