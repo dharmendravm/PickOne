@@ -33,6 +33,12 @@ export async function registerAction(
           "Account created successfully please check your email and verify",
       };
     }
+
+    return {
+      status: 500,
+      message: data.message ?? "Unexpected response from the server.",
+      errors: data.errors ?? {},
+    };
   } catch (error) {
     console.error("REGISTER ERROR:", error);
     if (axios.isAxiosError<ApiErrorResponse>(error)) {
