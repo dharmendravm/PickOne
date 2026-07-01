@@ -4,7 +4,7 @@ import type { Application, Request, Response } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import ejs from "ejs";
-
+import cors from "cors"
 import globalRoutes from "./routes/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app: Application = express();
 
 const PORT = process.env.PORT || 5050;
-
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -25,18 +25,20 @@ app.use("/api", globalRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   const html = await ejs.renderFile(
-    path.resolve(__dirname, "views", "emails", "new-user.ejs"),
+    path.resolve(__dirname, "views", "emails", "verify-email.ejs"),
     {
       name: "Dharmendra",
-      appName: "PickOne",
-      loginUrl: "http://localhost:3000/login",
-      supportEmail: "support@pickone.com",
+      verificationUrl: "https",
+      expiresIn: "1hr"
+      // appName: "PickOne",
+      // loginUrl: "http://localhost:3000/login",
+      // supportEmail: "support@pickone.com",
     },
   );
 
   // await sendMail("dk3672205@gmail.com", "testing smtp", html)
   await emailQueue.add(emailQueueName, {
-    to: "test@gmail.com",
+    to: "dk3672205@gmail.com",
     subject: "Testing queue email",
     body: html,
   });

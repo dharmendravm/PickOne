@@ -2,11 +2,12 @@ import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { formatZodError } from "../utils/zod.helper.js";
 import { AppError } from "../utils/app.error.js";
+import type { ErrorResponse } from "../types/api.js";
 
 export const galobalErrorHandler = (
   error: any,
   req: Request,
-  res: Response,
+  res: Response<ErrorResponse>,
   next: NextFunction,
 ) => {
   // 1. Handle Zod Validation Errors

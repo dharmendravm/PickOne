@@ -10,7 +10,7 @@ interface EmailJobDataType {
   body: string;
 }
 
-export const emailQueue = new Queue(emailQueueName, {
+export const emailQueue = new Queue<EmailJobDataType>(emailQueueName, {
   connection: redisConnection,
   defaultJobOptions: defaultQueueOptions,
 });

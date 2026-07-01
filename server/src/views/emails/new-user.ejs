@@ -1,95 +1,50 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <meta name="supported-color-schemes" content="light" />
-    <title>Welcome to <%= typeof appName !== "undefined" && appName ? appName : "PickOne" %></title>
-  </head>
-  <body style="margin: 0; padding: 0; background-color: #f7f7f7; color: #171717; font-family: Inter, Arial, Helvetica, sans-serif;">
-    <div style="display: none; max-height: 0; overflow: hidden; opacity: 0; color: transparent;">
-      Your PickOne account is ready. Start making better decisions together.
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to <%= appName || "PickOne" %></title>
+</head>
 
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; background-color: #f7f7f7;">
-      <tr>
-        <td align="center" style="padding: 40px 16px;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; max-width: 600px;">
-            <%- include("partials/navbar") %>
+<body style="margin:0;padding:40px 16px;background:#f7f7f7;font-family:Arial,Helvetica,sans-serif;">
 
-            <tr>
-              <td style="overflow: hidden; border: 1px solid #e5e5e5; border-radius: 12px; background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                  <tr>
-                    <td align="center" style="padding: 36px 32px; background-color: #f3faf4; border-bottom: 1px solid #e5eee7;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                        <tr>
-                          <td align="center" width="64" height="64" style="width: 64px; height: 64px; border: 1px solid #b9cdbf; border-radius: 50%; background-color: #ffffff; color: #385443; font-size: 30px; font-weight: 700; line-height: 64px;">
-                            &#10003;
-                          </td>
-                        </tr>
-                      </table>
-                      <p style="margin: 16px 0 0; color: #385443; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
-                        Account created
-                      </p>
-                    </td>
-                  </tr>
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center">
 
-                  <tr>
-                    <td style="padding: 38px 42px 18px;">
-                      <h1 style="margin: 0 0 14px; color: #171717; font-size: 28px; line-height: 1.25; letter-spacing: -0.02em;">
-                        Welcome, <%= typeof name !== "undefined" && name ? name : "there" %>!
-                      </h1>
-                      <p style="margin: 0; color: #737373; font-size: 16px; line-height: 1.7;">
-                        Your PickOne account is ready. Create a poll, share two choices, and see what everyone picks.
-                      </p>
-                    </td>
-                  </tr>
+        <table width="100%" style="max-width:600px;">
+          <%- include("partials/navbar") %>
 
-                  <tr>
-                    <td style="padding: 14px 42px 38px;">
-                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 28px;">
-                        <tr>
-                          <td width="33.33%" align="center" style="padding: 14px 6px; border: 1px solid #e5e5e5; border-radius: 10px 0 0 10px; background-color: #fafafa;">
-                            <div style="color: #171717; font-size: 13px; font-weight: 700;">1. Create</div>
-                            <div style="margin-top: 4px; color: #8a8a8a; font-size: 11px;">Add choices</div>
-                          </td>
-                          <td width="33.33%" align="center" style="padding: 14px 6px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; background-color: #fafafa;">
-                            <div style="color: #171717; font-size: 13px; font-weight: 700;">2. Share</div>
-                            <div style="margin-top: 4px; color: #8a8a8a; font-size: 11px;">Invite people</div>
-                          </td>
-                          <td width="33.33%" align="center" style="padding: 14px 6px; border: 1px solid #e5e5e5; border-radius: 0 10px 10px 0; background-color: #fafafa;">
-                            <div style="color: #171717; font-size: 13px; font-weight: 700;">3. Decide</div>
-                            <div style="margin-top: 4px; color: #8a8a8a; font-size: 11px;">See the winner</div>
-                          </td>
-                        </tr>
-                      </table>
+          <tr>
+            <td style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:40px;text-align:center;">
 
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                        <tr>
-                          <td align="center" style="border-radius: 9px; background-color: #171717;">
-                            <a href="<%= typeof loginUrl !== 'undefined' && loginUrl ? loginUrl : '#' %>" style="display: inline-block; padding: 14px 24px; color: #ffffff; font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none;">
-                              Create your first poll &nbsp;&#8594;
-                            </a>
-                          </td>
-                        </tr>
-                      </table>
+              <div style="font-size:42px;">🎉</div>
 
-                      <p style="margin: 28px 0 0; color: #8a8a8a; font-size: 13px; line-height: 1.6;">
-                        If you did not create this account, contact us at
-                        <a href="mailto:<%= typeof supportEmail !== 'undefined' && supportEmail ? supportEmail : 'support@example.com' %>" style="color: #171717; font-weight: 600; text-decoration: underline;"><%= typeof supportEmail !== "undefined" && supportEmail ? supportEmail : "support@example.com" %></a>.
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+              <h2 style="margin:16px 0 12px;color:#171717;">
+                Welcome, <%= name || "there" %>!
+              </h2>
 
-            <%- include("partials/footer") %>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
+              <p style="margin:0 0 28px;color:#666;line-height:1.6;">
+                Your <strong><%= appName || "PickOne" %></strong> account has been created successfully.
+                Start creating polls and let people vote.
+              </p>
+
+              <a
+                href="<%= loginUrl %>"
+                style="display:inline-block;padding:12px 24px;background:#171717;color:#fff;text-decoration:none;border-radius:6px;font-weight:600;"
+              >
+                Get Started →
+              </a>
+
+            </td>
+          </tr>
+
+          <%- include("partials/footer") %>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
 </html>
