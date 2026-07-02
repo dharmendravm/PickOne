@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "./providers";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <main>{children}</main>
+        <Providers>{children}</Providers>
         <Toaster richColors position="top-right"/>
       </body>
     </html>

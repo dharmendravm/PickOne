@@ -18,7 +18,7 @@ export function SubmitButton({
     <Button
       type="submit"
       size="lg"
-      className="w-full"
+      className="w-full bg-[#050b14] text-white shadow-sm hover:bg-gray-800 dark:bg-white dark:text-black"
       disabled={pending}
     >
       {pending ? pendingText : children}

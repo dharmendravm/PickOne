@@ -4,15 +4,16 @@ import { useState, useEffect, useActionState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 import { registerAction } from "@/actions/auth-actions";
-import type { RegisterActionState } from "@/types/auth";
+import type { AuthActionState } from "@/types/auth";
 import { SubmitButton } from "@/components/common/submit-btn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import OAuthButtons from "./oauth-button";
 
 export default function Register() {
-  const initialState: RegisterActionState = {
+  const initialState: AuthActionState = {
     status: 0,
     message: "",
     errors: {},
@@ -24,20 +25,19 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
-    if (state.status === 201) {
+    const status = state.status ?? 0;
+
+    if (status === 0 || !state.message) return;
+
+    if (status >= 200 && status < 300) {
       toast.success(state.message);
-    }
-
-    if (state.status === 422) {
-      toast.error(state.message);
-    }
-
-    if (state.status === 500) {
+    } else {
       toast.error(state.message);
     }
   }, [state]);
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-3.5">
+      <OAuthButtons />
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
         <Input
@@ -45,7 +45,7 @@ export default function Register() {
           name="name"
           autoComplete="name"
           placeholder="Your name"
-          className="h-11"
+          className="h-11 border-foreground/15 bg-background px-3 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
           required
         />
         {state?.errors?.name && (
@@ -61,7 +61,7 @@ export default function Register() {
           type="email"
           autoComplete="email"
           placeholder="you@example.com"
-          className="h-11"
+          className="h-11 border-foreground/15 bg-background px-3 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
           required
         />
         {state?.errors?.email && (
@@ -78,15 +78,10 @@ export default function Register() {
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
             placeholder="At least 8 characters"
-            className="h-11 pr-11"
+            className="h-11 border-foreground/15 bg-background px-3 pr-11 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
             minLength={8}
             required
           />
-          {state?.errors?.password && (
-            <p className="text-sm text-destructive">
-              {state?.errors?.password}
-            </p>
-          )}
           <Button
             type="button"
             variant="ghost"
@@ -98,9 +93,14 @@ export default function Register() {
             {showPassword ? <EyeOff /> : <Eye />}
           </Button>
         </div>
+        {state?.errors?.password && (
+          <p className="text-sm text-destructive">
+            {state?.errors?.password}
+          </p>
+        )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="confirm_password">confirm password</Label>
+        <Label htmlFor="confirm_password">Confirm password</Label>
         <div className="relative">
           <Input
             id="confirm_password"
@@ -108,7 +108,7 @@ export default function Register() {
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
             placeholder="At least 8 characters"
-            className="h-11 pr-11"
+            className="h-11 border-foreground/15 bg-background px-3 pr-11 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
             minLength={8}
             required
           />

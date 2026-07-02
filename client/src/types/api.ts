@@ -3,4 +3,5 @@ export interface ApiErrorResponse {
   errors?: Record<string, string>;
 }
 
+
 export type ApiResponse<T> = T | ApiErrorResponse;

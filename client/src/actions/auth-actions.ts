@@ -1,18 +1,53 @@
 "use server";
 
-import { REGISTER_URL } from "@/lib/api-endpoints";
 import axios from "axios";
-import type { ApiErrorResponse } from "@/types/api";
+import { handleApiError } from "@/lib/api-error";
+import { CHECK_CREDENTIALS_URL, REGISTER_URL } from "@/lib/api-endpoints";
 import type {
-  RegisterActionState,
+  AuthActionState,
+  LoginActionState,
+  LoginApiRequest,
+  LoginApiResponse,
   RegisterApiRequest,
   RegisterApiResponse,
 } from "@/types/auth";
 
+export async function loginAction(_prevState: LoginActionState, formData: FormData): Promise<LoginActionState> {
+  try {
+    const payload: LoginApiRequest = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
+
+    const { data } = await axios.post<LoginApiResponse>(
+      CHECK_CREDENTIALS_URL,
+      payload,
+    );
+
+    if ("statusCode" in data) {
+      return {
+        status: data.statusCode,
+        message: data.message ?? "Logged in successfully",
+        data: {
+          email: data.data.email,
+          password: formData.get("password") as string,
+        },
+      };
+    }
+    return {
+      status: 500,
+      message: data.message ?? "Unexpected response from the server.",
+      errors: data.errors ?? {},
+    };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
 export async function registerAction(
-  prevState: RegisterActionState,
+  _prevState: AuthActionState,
   formData: FormData,
-): Promise<RegisterActionState> {
+): Promise<AuthActionState> {
   try {
     const payload: RegisterApiRequest = {
       name: formData.get("name") as string,
@@ -40,24 +75,6 @@ export async function registerAction(
       errors: data.errors ?? {},
     };
   } catch (error) {
-    console.error("REGISTER ERROR:", error);
-    if (axios.isAxiosError<ApiErrorResponse>(error)) {
-      if (error.response?.status === 422) {
-        console.error("Status:", error.response?.status);
-        console.error("Data:", error.response?.data);
-        console.error("Message:", error.message);
-        return {
-          status: 422,
-          message: error.response.data.message,
-          errors: error.response.data.errors,
-        };
-      }
-    }
-
-    return {
-      status: 500,
-      message: "Something went wrong. Please try again.",
-      errors: {},
-    };
+    return handleApiError(error);
   }
 }

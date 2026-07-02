@@ -1,9 +1,18 @@
 import type { ApiResponse } from "./api";
 
-export interface RegisterActionState {
+export interface AuthActionState {
   status?: number;
   message?: string;
   errors?: Record<string, string>;
+}
+export interface LoginActionState {
+  status?: number;
+  message?: string;
+  errors?: Record<string, string>;
+  data?: {
+    email: string;
+    password: string
+  }
 }
 
 export interface RegisterApiRequest {
@@ -21,7 +30,7 @@ interface RegisterResponse {
 export type RegisterApiResponse = ApiResponse<RegisterResponse>;
 
 export interface LoginApiRequest {
-  name: string;
+  email: string;
   password: string;
 }
 
@@ -34,9 +43,7 @@ export interface JwtPayload {
 interface LoginResponse {
   statusCode: number;
   message: string;
-  data: JwtPayload & {
-    token: string;
-  };
+  data: JwtPayload
 }
 
 export type LoginApiResponse = ApiResponse<LoginResponse>;

@@ -13,21 +13,20 @@ export default function RegisterPage() {
         >
           P
         </Link>
-        <p className="font-bold">PickOne</p>
-        <h1 className="text-2xl font-bold">Create your account</h1>
-        <p className="text-sm text-muted-foreground">
-          Start creating polls and voting
+        <h1 className="text-2xl font-semibold tracking-tight">Create your account</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Join PickOne and start making better choices
         </p>
       </div>
 
-      <div className="mt-7">
+      <div className="mt-6">
         <Register />
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="mt-5 rounded-lg border border-foreground/15 px-4 py-3 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-semibold text-foreground hover:underline"
+            className="font-semibold text-[#8f00e8] hover:underline"
           >
             Log in
           </Link>

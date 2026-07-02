@@ -1,16 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 import { AuthShell } from "@/components/auth-shell";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import Login from "@/components/auth/Login";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <AuthShell>
@@ -21,71 +13,16 @@ export default function LoginPage() {
           >
             P
           </Link>
-          <p className="font-bold">PickOne</p>
-          <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="text-sm text-muted-foreground">Sign in to continue to your account</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Good to see you again</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Ready to make things happen again?</p>
         </div>
 
-        <div className="mt-7">
-          <form className="space-y-4" onSubmit={(event) => event.preventDefault()}>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                className="h-11"
-                required
-              />
-            </div>
+        <div className="mt-6">
+          <Login />
 
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-xs font-medium text-muted-foreground hover:underline">
-                  Forgot password?
-                </Link>
-              </div>
-              <div className="relative">
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  placeholder="Enter your password"
-                  className="h-11 pr-11"
-                  required
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? <EyeOff /> : <Eye />}
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Checkbox id="remember" name="remember" />
-              <Label htmlFor="remember" className="font-normal text-muted-foreground">
-                Remember me
-              </Label>
-            </div>
-
-            <Button type="submit" size="lg" className="w-full">
-              Sign in
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="mt-5 rounded-lg border border-foreground/15 px-4 py-3 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="font-semibold text-foreground hover:underline">
+            <Link href="/register" className="font-semibold text-[#8f00e8] hover:underline">
               Sign up
             </Link>
           </p>
