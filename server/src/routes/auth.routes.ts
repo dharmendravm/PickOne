@@ -1,23 +1,21 @@
 import { Router } from "express";
 import {
-  loginController,
+  checkCredentialsController,
+  forgotPasswordController,
   registerController,
+  resetPasswordController,
   verifyEmailController,
   verifyEmailErrorController,
 } from "../controllers/auth.controller.js";
 
 const router = Router();
 
-// Login Route
-router.post("/login", loginController);
-
-// Register Route
+router.post("/check-credentials", checkCredentialsController);
 router.post("/register", registerController);
+router.post("/forgot-password", forgotPasswordController);
+router.post("/reset-password", resetPasswordController);
 
-// Email Verify Route
 router.get("/verify-email", verifyEmailController);
-
-// Email Verify Url Error Route
-router.get("/verify-error", verifyEmailErrorController)
+router.get("/verify-error", verifyEmailErrorController);
 
 export default router;

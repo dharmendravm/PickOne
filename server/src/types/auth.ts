@@ -1,4 +1,4 @@
-import type { ErrorResponse } from "./api.js";
+import type { ApiResponse } from "./api.js";
 
 export interface RegisterApiRequest {
   name: string;
@@ -7,15 +7,27 @@ export interface RegisterApiRequest {
   confirm_password: string;
 }
 
-export interface AuthResponse {
+interface RegisterResponse {
   statusCode: number;
   message: string;
 }
-
-export type AuthApiResponse = AuthResponse | ErrorResponse;
-
 
 export interface LoginApiRequest {
   name: string;
   password: string;
 }
+
+export interface JwtPayload {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface LoginResponse {
+  statusCode: number;
+  message: string;
+  data: JwtPayload;
+}
+
+export type LoginApiResponse = ApiResponse<LoginResponse>;
+export type RegisterApiResponse = ApiResponse<RegisterResponse>;

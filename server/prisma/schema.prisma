@@ -12,13 +12,36 @@ datasource db {
 }
 
 model User {
-  id                  Int       @id @default(autoincrement())
-  name                String    @db.VarChar(191)
-  email               String    @unique
-  password            String
-  password_rest_token String?
-  token_send_at       DateTime?
-  email_verified_at   DateTime?
-  email_verify_token  String?
-  created_at          DateTime  @default(now())
+  id Int @id @default(autoincrement())
+
+  name     String  @db.VarChar(191)
+  email    String  @unique
+  password String?
+
+  provider    Provider @default(CREDENTIALS)
+  provider_id String?  @unique
+
+  password_reset_token   String?
+  password_reset_send_at DateTime?
+  email_verified_at      DateTime?
+  email_verify_token     String?
+  created_at             DateTime  @default(now())
+  updated_at             DateTime  @updatedAt
+  battles                   Battle []
+}
+
+enum Provider {
+  CREDENTIALS
+  GOOGLE
+}
+
+model Battle  {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     Int
+  title       String
+  description String
+  image       String
+  created_at  DateTime @default(now())
+  expires_at  DateTime
 }
