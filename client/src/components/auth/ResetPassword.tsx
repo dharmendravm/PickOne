@@ -1,26 +1,26 @@
 "use client";
 
-import { useState, useEffect, useActionState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-
-import { registerAction } from "@/actions/auth-actions";
-import type { AuthActionState } from "@/types/auth";
-import { SubmitButton } from "@/components/common/submit-btn";
-import { Button } from "@/components/ui/button";
+import { useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-// import OAuthButtons from "./OauthButton";
+import { SubmitButton } from "../common/submit-btn";
+import { resetPasswordAction } from "@/actions/auth-actions";
+import { Button } from "../ui/button";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Register() {
-  const initialState: AuthActionState = {
+
+export default function ResetPassword() {
+  const initialState = {
     status: 0,
     message: "",
     errors: {},
   };
 
-  const [state, formAction] = useActionState(registerAction, initialState);
-
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [state, formAction] = useActionState(resetPasswordAction, initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -29,44 +29,35 @@ export default function Register() {
 
     if (status === 0 || !state.message) return;
 
-    if (status >= 200 && status < 300) {
+    if (status === 200) {
       toast.success(state.message);
+      setTimeout(() => {
+        router.replace("/login");
+      }, 1000);
     } else {
-      toast.error(state.message);
+      toast.error(state.errors?.message || state.message);
     }
-  }, [state]);
-  return (
-    <form action={formAction} className="space-y-3.5">
-      {/* <OAuthButtons /> */}
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          id="name"
-          name="name"
-          autoComplete="name"
-          placeholder="Your name"
-          className="h-11 border-foreground/15 bg-background px-3 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
-          required
-        />
-        {state?.errors?.name && (
-          <p className="text-sm text-destructive">{state?.errors?.name}</p>
-        )}
-      </div>
+  }, [state, router]);
 
+  return (
+    <form action={formAction} className="space-y-4">
+      <input
+        name="token"
+        type="hidden"
+        value={searchParams.get("token") ?? ""}
+      />
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">Account</Label>
+
         <Input
           id="email"
           name="email"
           type="email"
-          autoComplete="email"
-          placeholder="you@example.com"
-          className="h-11 border-foreground/15 bg-background px-3 shadow-xs focus-visible:border-foreground/40 focus-visible:ring-2"
-          required
+          value={searchParams.get("email") ?? ""}
+          readOnly
+          tabIndex={-1}
+          className="h-11 cursor-not-allowed border-muted bg-muted text-muted-foreground shadow-none focus-visible:ring-0"
         />
-        {state?.errors?.email && (
-          <p className="text-sm text-destructive">{state?.errors?.email}</p>
-        )}
       </div>
 
       <div className="space-y-2">
@@ -94,11 +85,10 @@ export default function Register() {
           </Button>
         </div>
         {state?.errors?.password && (
-          <p className="text-sm text-destructive">
-            {state?.errors?.password}
-          </p>
+          <p className="text-sm text-destructive">{state?.errors?.password}</p>
         )}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="confirm_password">Confirm password</Label>
         <div className="relative">
@@ -131,9 +121,7 @@ export default function Register() {
         )}
       </div>
 
-      <SubmitButton pendingText="Account creating...">
-        Create account
-      </SubmitButton>
+      <SubmitButton pendingText="Resetting...">Reset Password</SubmitButton>
     </form>
   );
 }

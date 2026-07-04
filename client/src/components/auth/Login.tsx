@@ -11,7 +11,7 @@ import { loginAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 import { SubmitButton } from "../common/submit-btn";
 import { signIn } from "next-auth/react";
-import OAuthButtons from "./oauth-button";
+import OAuthButtons from "./OauthButton";
 
 export default function Login() {
   const initialState = {
@@ -64,7 +64,7 @@ export default function Login() {
         <div className="flex justify-between">
           <Label htmlFor="password">Password</Label>
           <Link
-            href="#"
+            href="/forgot-password"
             className="text-xs font-medium text-muted-foreground hover:underline"
           >
             Forgot password?
