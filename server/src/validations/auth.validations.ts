@@ -15,6 +15,7 @@ export const registerSchema = z
 
     password: z
       .string("Password is required.")
+      .trim()
       .min(6, "Password must be at least 6 characters long."),
 
     confirm_password: z
@@ -36,7 +37,8 @@ export const resetPasswordSchema = z
     token: z.string("Token is required."),
     password: z
       .string("Password is required.")
-      .min(6, "Password must be at least 6 characters long."),
+      .trim()
+      .min(1, "Password must be at least 6 characters long."),
 
     confirm_password: z
       .string("Confirm Password is required.")

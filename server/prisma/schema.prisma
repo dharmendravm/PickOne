@@ -27,7 +27,7 @@ model User {
   email_verify_token     String?
   created_at             DateTime  @default(now())
   updated_at             DateTime  @updatedAt
-  battles                   Battle []
+  battles                Battle[]
 }
 
 enum Provider {
@@ -35,13 +35,14 @@ enum Provider {
   GOOGLE
 }
 
-model Battle  {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id     Int
-  title       String
-  description String
-  image       String
-  created_at  DateTime @default(now())
-  expires_at  DateTime
+model Battle {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       Int
+  title         String
+  description   String
+  image         String
+  imagePublicId String
+  created_at    DateTime @default(now())
+  expires_at    DateTime
 }

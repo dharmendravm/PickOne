@@ -11,6 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Application = express();
 
+app.use(apiRateLimiter);
 const PORT = process.env.PORT || 5050;
 app.use(cors())
 app.use(express.json());
@@ -54,6 +55,7 @@ app.use(galobalErrorHandler);
 import "./jobs/index.js";
 import { emailQueue, emailQueueName } from "./jobs/email.job.js";
 import { galobalErrorHandler } from "./middlewares/error.middleware.js";
+import { apiRateLimiter } from "./middlewares/rate-limit.middleware.js";
 
 app.listen(PORT, () => {
   console.log(`Server is runnig on port: ${PORT}`);

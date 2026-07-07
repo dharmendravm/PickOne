@@ -18,7 +18,8 @@ import type {
   LoginApiRequest,
   LoginApiResponse,
   JwtPayload,
-} from "../types/auth.js";
+} from "../types/auth.types.js";
+import jwt from "jsonwebtoken";
 import { checkHourDateDiff } from "../utils/check-hour-date.js";
 
 export const registerController = async (
@@ -145,12 +146,20 @@ export const checkCredentialsController = async (
     if (!isPasswordMatch) {
       throw new AppError("Invalid email or password", 400);
     }
-
+    const jwtPayload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    };
+    const token = jwt.sign(jwtPayload, process.env.JWT_SECRET!, {
+      expiresIn: "15d",
+    });
     return res.status(200).json({
       statusCode: 200,
       message: "Logged in successfully",
       data: {
         email: user.email,
+        token: `Bearer ${token}`
       },
     });
   } catch (error) {
@@ -230,7 +239,10 @@ export const resetPasswordController = async (
     }
 
     if (user.password_reset_token !== payload.token) {
-      throw new AppError("Invalid verification Token, Please make sure you copied the correct link.", 400);
+      throw new AppError(
+        "Invalid verification Token, Please make sure you copied the correct link.",
+        400,
+      );
     }
 
     // Check token 2 hours timeframe
