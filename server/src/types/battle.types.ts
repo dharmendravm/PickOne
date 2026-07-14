@@ -5,7 +5,7 @@ type image = {
 }
 
 type battle = {
- title: string;
+ title?: string;
  description: string;
  image: string;
  created_at: Date;

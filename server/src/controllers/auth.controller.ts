@@ -158,6 +158,7 @@ export const checkCredentialsController = async (
       statusCode: 200,
       message: "Logged in successfully",
       data: {
+        name: user.name,
         email: user.email,
         token: `Bearer ${token}`
       },

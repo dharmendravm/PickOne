@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import multer from "multer";
 import { ZodError } from "zod";
 import { formatZodError } from "../utils/zod.helper.js";
 import { AppError } from "../utils/app.error.js";
@@ -25,7 +26,17 @@ export const galobalErrorHandler = (
       ...(error.errors && { errors: error.errors }),
     });
   }
+  // 3. Handle Multer upload limits before falling back to a 500 response.
+  if (error instanceof multer.MulterError) {
+    const message =
+      error.code === "LIMIT_FILE_SIZE"
+        ? "Image must be 4 MB or smaller."
+        : "Unable to upload the image.";
 
+    return res.status(400).json({ message });
+  }
+
+  // Unexpected errors are logged on the server only.
   console.log("Server Error Logs", error);
   res.status(500).json({
     message: "Internal Server Error",

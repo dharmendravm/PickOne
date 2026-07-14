@@ -23,19 +23,11 @@ export const authOptions: AuthOptions = {
   },
 
   callbacks: {
-    async session({
-      session,
-      user,
-      token,
-    }: {
-      session: CustomSession;
-      user: CustomUser;
-      token: JWT;
-    }) {
-      session.user = token.user as CustomUser;
+    async session({ session, token }) {
+      (session as CustomSession).user = token.user as CustomUser;
       return session;
     },
-    async jwt({ token, user }: { token: JWT; user: CustomUser | null }) {
+    async jwt({ token, user }) {
       if (user) token.user = user;
       return token;
     },
@@ -46,15 +38,23 @@ export const authOptions: AuthOptions = {
       name: "Credentials",
 
       credentials: {
-        username: {},
+        email: {},
         password: {},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const { data } = await axios.post(CHECK_CREDENTIALS_URL, credentials);
         const user = data?.data;
 
         if (user) {
-          return user;
+          // Only values returned here are persisted in the NextAuth JWT.
+          // Keep the API token as part of the user so the session callback can
+          // expose it at `session.user.token`.
+          return {
+            id: String(user.id ?? user.email),
+            name: user.name,
+            email: user.email,
+            token: user.token,
+          };
         } else {
           return null;
         }

@@ -1,4 +1,5 @@
 import multer from "multer";
+import { AppError } from "../utils/app.error.js";
 
 const storage = multer.memoryStorage();
 
@@ -12,7 +13,7 @@ export const upload = multer({
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
     if (!allowedTypes.includes(file.mimetype)) {
-      return cb(new Error("Only JPG, PNG and WebP images are allowed."));
+      return cb(new AppError("Only JPG, PNG and WebP images are allowed.", 400));
     }
 
     cb(null, true);
