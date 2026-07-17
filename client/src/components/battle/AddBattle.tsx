@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PlusIcon, SwordsIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,7 @@ import {
 } from "@/lib/battle";
 
 export default function AddBattle({ user }: { user: CustomUser }) {
+  const router = useRouter();
   const [date, setDate] = useState<Date>();
 
   const [open, setOpen] = useState(false);
@@ -79,6 +81,7 @@ export default function AddBattle({ user }: { user: CustomUser }) {
       setDate(undefined);
       setImage(null);
       setOpen(false);
+      router.refresh();
     } catch (error) {
       const apiError = handleApiError(error);
       setErrors(apiError.errors as BattleFormErrors);

@@ -76,11 +76,14 @@ export const getUserBattelsController = async (
       where: {
         user_id: req.user.id,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return res.status(200).json({
       statusCode: 200,
-      message: "battels fetched successfully",
+      message: "Battles fetched successfully",
       data: {
         battles,
       },

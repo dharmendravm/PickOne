@@ -2,6 +2,22 @@ import axios from "axios";
 
 import { BATTLE_URL } from "@/lib/api-endpoints";
 
+export type Battle = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  created_at: string;
+  expires_at: string;
+};
+
+type GetBattlesResponse = {
+  message?: string;
+  data?: {
+    battles?: Battle[];
+  };
+};
+
 export type BattleFormValues = {
   title: string;
   description: string;
@@ -44,4 +60,12 @@ export async function createBattle(
   return axios.post<{ message?: string }>(BATTLE_URL, formData, {
     headers: { Authorization: token },
   });
+}
+
+export async function getBattles(token?: string | null) {
+  const { data } = await axios.get<GetBattlesResponse>(BATTLE_URL, {
+    headers: { Authorization: token },
+  });
+
+  return data.data?.battles ?? [];
 }
